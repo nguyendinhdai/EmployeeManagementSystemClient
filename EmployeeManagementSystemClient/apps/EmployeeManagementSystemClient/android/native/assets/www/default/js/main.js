@@ -2,8 +2,7 @@
 /* JavaScript content from js/main.js in folder common */
 var busy;
 function wlCommonInit() {
-	busy = new WL.BusyIndicator();
-	displayInfo();
+	busy = new WL.BusyIndicator();	
 }
 
 function reload() {
@@ -14,13 +13,36 @@ function reload() {
 	setTimeout(WL.Client.reloadApp, 5000);
 }
 
+function clearData() {
+	$('#employee_id').val('');
+	$('#employee_name').val('');
+	$('#employee_sex').val('');
+	$('#employee_dayofbirth').val('');
+}
+
+function getData() {
+	var employee_id = $('#employee_id').val();
+	var employee_name = $('#employee_name').val();
+	var employee_sex = $('#employee_sex').val();
+	var employee_dayofbirth = $('#employee_dayofbirth').val();
+
+	var data = [ employee_id, employee_name, employee_sex, employee_dayofbirth ];
+	return data;
+}
+
 function addEmployee() {
 	// Show busy indicator. Will work regardless of a environment
 	busy.show();
 
+	var data = getData();
+	var params = {
+		'params' : JSON.stringify(data)
+	};
+
 	var resourceRequest = new WLResourceRequest("/adapters/ems/addEmployee",
 			WLResourceRequest.POST);
-	resourceRequest.send().then(addEmployeeSuccess, addEmployeeFailure);
+	resourceRequest.sendFormParameters(params).then(addEmployeeSuccess,
+			addEmployeeFailure);
 }
 
 function addEmployeeSuccess(result) {
@@ -31,10 +53,11 @@ function addEmployeeSuccess(result) {
 				"You have been created an employee", [ {
 					text : 'Close',
 					handler : function() {
+						clearData();
 					}
 				} ]);
 	} else
-		loadFeedsFailure();
+		addEmployeeFailure(result);
 }
 
 function addEmployeeFailure(result) {
