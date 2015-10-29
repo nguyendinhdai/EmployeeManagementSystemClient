@@ -16,7 +16,7 @@ function clearData() {
 	$('#employee_name').val('');
 	$('#employee_sex').val('');
 	$('#employee_dayofbirth').val('');
-	
+
 	$('#employee_id').focus();
 }
 
@@ -46,9 +46,8 @@ function addEmployee() {
 }
 
 function addEmployeeSuccess(result) {
-	busy.hide();
-
 	if (result.status === 200 && result.responseJSON.status === 'created') {
+		busy.hide();
 		WL.SimpleDialog.show("Informations",
 				"You have been created an employee", [ {
 					text : 'Close',
@@ -56,8 +55,9 @@ function addEmployeeSuccess(result) {
 						clearData();
 					}
 				} ]);
-	} else
+	} else {
 		addEmployeeFailure(result);
+	}
 }
 
 function addEmployeeFailure(result) {

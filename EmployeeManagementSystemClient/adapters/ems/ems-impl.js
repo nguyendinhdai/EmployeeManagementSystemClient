@@ -7,6 +7,7 @@ function addEmployee(employee_id, employee_name, employee_sex,
 	content.employee_name = employee_name;
 	content.employee_sex = employee_sex;
 	content.employee_dayofbirth = employee_dayofbirth;
+	content.status = 'pending';
 
 	var input = {
 		method : "post",
