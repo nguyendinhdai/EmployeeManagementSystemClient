@@ -2,7 +2,7 @@
 /* JavaScript content from js/main.js in folder common */
 var busy;
 function wlCommonInit() {
-	busy = new WL.BusyIndicator();	
+	busy = new WL.BusyIndicator();
 }
 
 function reload() {
@@ -18,6 +18,8 @@ function clearData() {
 	$('#employee_name').val('');
 	$('#employee_sex').val('');
 	$('#employee_dayofbirth').val('');
+
+	$('#employee_id').focus();
 }
 
 function getData() {
@@ -46,9 +48,8 @@ function addEmployee() {
 }
 
 function addEmployeeSuccess(result) {
-	busy.hide();
-
 	if (result.status === 200 && result.responseJSON.status === 'created') {
+		busy.hide();
 		WL.SimpleDialog.show("Informations",
 				"You have been created an employee", [ {
 					text : 'Close',
@@ -56,8 +57,9 @@ function addEmployeeSuccess(result) {
 						clearData();
 					}
 				} ]);
-	} else
+	} else {
 		addEmployeeFailure(result);
+	}
 }
 
 function addEmployeeFailure(result) {
